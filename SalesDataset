@@ -1,0 +1,66 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# Sample dataset of 10 months
+data = {
+    'Advertising_Budget': [10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
+    'Sales': [120, 150, 180, 210, 240, 270, 300, 330, 360, 390]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+print("Dataset:")
+print(df)
+
+# Dataset Information
+print("\nDataset Information:")
+print(df.info())
+
+# Check Missing Values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Statistical Summary
+print("\nStatistical Summary:")
+print(df.describe())
+
+# Independent variable (X) and Dependent variable (y)
+X = df[['Advertising_Budget']]
+y = df['Sales']
+
+# Create and train Linear Regression model
+model = LinearRegression()
+model.fit(X, y)
+
+# Predict Sales
+y_pred = model.predict(X)
+
+# Calculate R² Score
+r2 = r2_score(y, y_pred)
+
+print("\nModel Performance")
+print("R² Score:", round(r2, 4))
+print("Slope (Coefficient):", model.coef_[0])
+print("Intercept:", model.intercept_)
+
+# Predict sales for an advertising budget of 37.5
+budget = [[37.5]]
+predicted_sales = model.predict(budget)
+
+print("\nPredicted Sales for Advertising Budget of 37.5:")
+print(round(predicted_sales[0], 2))
+
+# Visualization
+plt.scatter(X, y, color='blue', label='Actual Data')
+plt.plot(X, y_pred, color='red', linewidth=2, label='Regression Line')
+
+plt.title('Advertising Budget vs Sales')
+plt.xlabel('Advertising Budget (₹1000s)')
+plt.ylabel('Sales (Units)')
+plt.legend()
+plt.grid(True)
+
+plt.show()
