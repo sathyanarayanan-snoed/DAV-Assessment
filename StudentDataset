@@ -1,0 +1,55 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# Sample dataset of 10 students
+data = {
+    'Study_Hours': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    'Marks': [35, 40, 50, 55, 60, 68, 75, 80, 88, 95]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+print("Dataset:")
+print(df)
+
+# Independent variable (X) and Dependent variable (y)
+X = df[['Study_Hours']]
+y = df['Marks']
+
+# Create and train Linear Regression model
+model = LinearRegression()
+model.fit(X, y)
+
+# Predict marks
+y_pred = model.predict(X)
+
+# Calculate R² Score
+r2 = r2_score(y, y_pred)
+
+print("\nModel Performance")
+print("R² Score:", round(r2, 4))
+print("Slope (Coefficient):", model.coef_[0])
+print("Intercept:", model.intercept_)
+
+# Predict marks for a student studying 7.5 hours
+hours = [[7.5]]
+predicted_marks = model.predict(hours)
+
+print("\nPredicted Marks for 7.5 Study Hours:",
+      round(predicted_marks[0], 2))
+
+# Visualization
+plt.scatter(X, y, color='blue', label='Actual Data')
+plt.plot(X, y_pred, color='red', linewidth=2,
+         label='Regression Line')
+
+plt.title('Study Hours vs Marks')
+plt.xlabel('Study Hours')
+plt.ylabel('Marks')
+plt.legend()
+plt.grid(True)
+
+plt.show()
